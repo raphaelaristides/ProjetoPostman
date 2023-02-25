@@ -1,0 +1,723 @@
+{
+	"info": {
+		"_postman_id": "4a067a26-a89b-4a5a-92e1-bf97f0d59291",
+		"name": "Go Rest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16819792"
+	},
+	"item": [
+		{
+			"name": "Recurso Usuarios",
+			"item": [
+				{
+					"name": "Criar Usuarios",
+					"item": [
+						{
+							"name": "Criação De Usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();\r",
+											"pm.environment.set(\"id\", responseData.data.id);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"console.log(\"CT001 - Criação de Usuário com Sucesso\")\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"victoraristides@teste.com\");\r",
+											"});\r",
+											"console.log(\"CT001.1 - Validação Dados Retorno Json\")\r",
+											"\r",
+											"pm.test(\"Response time is less than 1300ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(1300);\r",
+											"});\r",
+											"console.log(\"CT001.2 - Validação tempo de Resposta < 2s\")\r",
+											"\r",
+											"\r",
+											"\r",
+											"console.log(\"Finalizado Execução de Testes Inserção de Users\")\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Alterar Usuario\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{NomeCompleto}}\",\r\n    \"gender\": \"{{SexoMasc}}\",\r\n    \"email\": \"{{EMAIL}}\",\r\n    \"status\": \"{{StatusOK}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLUSERS}}",
+									"host": [
+										"{{URLUSERS}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Criação De Usuário Dados Externos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();\r",
+											"pm.environment.set(\"idpost\", responseData.data.id);\r",
+											"\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"console.log(\"CT002 - Criação de Usuário com Dados Externos\")\r",
+											"\r",
+											"pm.test(\"Body matches string\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"testeusuario3@teste.com.br\");\r",
+											"});\r",
+											"console.log(\"CT002.1 - Validação Dados Retorno Json\")\r",
+											"\r",
+											"pm.test(\"Response time is less than 1300ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(1300);\r",
+											"});\r",
+											"console.log(\"CT002.3 - Validação tempo de Resposta < 2s\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.iterationData.get(\"varnome\")\r",
+											"pm.iterationData.get(\"vargender\")\r",
+											"pm.iterationData.get(\"varemail\")\r",
+											"pm.iterationData.get(\"varstatus\")\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{varnome}}\",\r\n    \"gender\": \"{{vargender}}\",\r\n    \"email\": \"{{varemail}}\",\r\n    \"status\": \"{{varstatus}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLUSERS}}",
+									"host": [
+										"{{URLUSERS}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"console.log(pm.info.requestName)"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Alterar Usuarios",
+					"item": [
+						{
+							"name": "Alterar Usuario",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Requisição de Usuario\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{NOMEALTERADO}}\",\r\n    \"email\": \"{{EMAILALTERADO}}\",\r\n    \"status\": \"{{StatusOK}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLUSERS}}{{id}}",
+									"host": [
+										"{{URLUSERS}}{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Buscar Usuarios",
+					"item": [
+						{
+							"name": "Requisição de Usuario",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Criar Posts\")"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"id\", jsonData.data[0].id);\r",
+											"console.log(jsonData)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URLUSERS}}?email={{EMAILALTERADO}}",
+									"host": [
+										"{{URLUSERS}}"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "{{EMAILALTERADO}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Excluir Usuarios",
+					"item": [
+						{
+							"name": "Deletar Usuário",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Excluir Post\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://gorest.co.in//public-api/users/{{id}}",
+									"protocol": "https",
+									"host": [
+										"gorest",
+										"co",
+										"in"
+									],
+									"path": [
+										"",
+										"public-api",
+										"users",
+										"{{id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Recurso Posts",
+			"item": [
+				{
+					"name": "Criar Posts",
+					"item": [
+						{
+							"name": "Criar Posts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();\r",
+											"pm.environment.set(\"idpost\", responseData.data.id);\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Buscar Posts\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": {{id}},\r\n    \"user_id\": {{id}},\r\n    \"title\": \"Automação de Testes - Victor Aristides.\",\r\n    \"body\": \"Post destinado para automação de testes criados e mapeados por Victor Aristides com a finalidade de aprimorar conhecimentos no Postman\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLPOST}}",
+									"host": [
+										"{{URLPOST}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Excluir Posts",
+					"item": [
+						{
+							"name": "Excluir Post",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Excluir Comentarios\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URLPOST}}{{idpost}}",
+									"host": [
+										"{{URLPOST}}{{idpost}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Buscar Posts",
+					"item": [
+						{
+							"name": "Buscar Posts",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Criar Comentarios\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLPOST}}{{idpost}}",
+									"host": [
+										"{{URLPOST}}{{idpost}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Recurso Comentarios",
+			"item": [
+				{
+					"name": "Criar Comentarios",
+					"item": [
+						{
+							"name": "Criar Comentarios",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseData = pm.response.json();\r",
+											"pm.environment.set(\"idcomment\", responseData.data.id);\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Requisição de Comentarios\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"id\": {{id}},\r\n\"post_id\": {{idpost}},\r\n\"name\": \"{{NomeCompleto}}\",\r\n\"email\": \"{{EMAILALTERADO}}\",\r\n\"body\": \"Teste de API para inserção de comentarios\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URLCOMENTS}}",
+									"host": [
+										"{{URLCOMENTS}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Excluir Comentarios",
+					"item": [
+						{
+							"name": "Excluir Comentarios",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"null\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URLCOMENTS}}{{idcomment}}",
+									"host": [
+										"{{URLCOMENTS}}{{idcomment}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Buscar Comentarios",
+					"item": [
+						{
+							"name": "Requisição de Comentarios",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"postman.setNextRequest(\"Deletar Usuário\")"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URLCOMENTS}}{{idcomment}}",
+									"host": [
+										"{{URLCOMENTS}}{{idcomment}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ID_USUARIO",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "idpost",
+			"value": ""
+		}
+	]
+}
